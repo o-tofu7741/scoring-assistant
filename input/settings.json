@@ -1,0 +1,28 @@
+{
+  "target": "test",
+  "tasks": [
+    {
+      "name": "Arith.java",
+      "lang": "java"
+    },
+    {
+      "name": "PhoneNumbers.java",
+      "lang": "java",
+      "args": [
+        {
+          "arg": [
+            "C:\\Users\\hoge\\fuga\\scoring-assistant\\test\\oop\\06\\phones.csv"
+          ]
+        }
+      ],
+      "inputs": [
+        {
+          "input": "User A"
+        },
+        {
+          "input": "User B"
+        }
+      ]
+    }
+  ]
+}
