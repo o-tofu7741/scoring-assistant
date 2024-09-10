@@ -9,7 +9,7 @@ from chardet import detect
 
 class Answer:
     def __init__(self, file_path: Path, task: dict) -> None:
-        self.file_path = file_path  # .replace("\\", "/")
+        self.file_path = file_path
         self.code_txt: str = ""
         self.result_txt: str = ""
         self.task_name: str = task["name"]
@@ -63,7 +63,6 @@ class Answer:
         elif self.task_lang == "java":
             cmd = [jdk_abs_path, self.file_path]
         else:
-            # self.result_txt = "cmd error"
             return
 
         for arg in self.args if self.args else [{"arg": []}]:
@@ -107,7 +106,6 @@ def formating(code: str):
     astyle_abs_path = Path(proj_dir_abs_path, "tools", "astyle-3.6-x64", "astyle.exe")
     try:
         result = subprocess.run(
-            # args=[jdk_abs_path, "-jar", gjf_abs_path, "-"],
             args=[astyle_abs_path, "--style=google", "--delete-empty-lines"],
             input=code,
             text=True,

@@ -5,7 +5,7 @@ from answer import Answer
 
 class Student:
     def __init__(self, student_dir_path: Path, settings: dict) -> None:
-        self.dir_path = student_dir_path  # .replace("\\", "/")
+        self.dir_path = student_dir_path
         self.user = self.dir_path.name  # .split("@")[0]
         self.answers: list[Answer] = []
         self.tasks: list[dict] = settings["tasks"]
@@ -23,7 +23,6 @@ class Student:
                 self.not_exist_tasks.append(task["name"])
 
     def get_results(self):
-        # self.set_answers()
         self.result += (
             f"{' USER : ' + self.user + ' ':#^70}\n\n"
             f"左記の課題ファイル無し or 名前ミス : {' ,'.join(self.not_exist_tasks) if len(self.not_exist_tasks)>0 else 'ミスしているファイルはありません'}\n\n"
@@ -44,10 +43,4 @@ class Student:
 
 
 if __name__ == "__main__":
-    hoge = Student(
-        Path("C:/github/auto-scoring-python/tmp/20J5-129@20j5129"),
-        {"tasks": [{"name": "Expand.java"}, {"name": "Loop.java"}]},
-    )
-    hoge.set_answers()
-    hoge.get_results()
-    print(hoge.result)
+    pass
