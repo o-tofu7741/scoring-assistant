@@ -1,26 +1,24 @@
-import glob
-from os import path
+from pathlib import Path
 
 from answer import Answer
 
 
 class Student:
-    def __init__(self, student_dir_path: str, settings: dict) -> None:
+    def __init__(self, student_dir_path: Path, settings: dict) -> None:
         self.dir_path = student_dir_path  # .replace("\\", "/")
-        self.user = path.basename(path.dirname(self.dir_path))  # .split("@")[0]
+        self.user = self.dir_path.name  # .split("@")[0]
         self.answers: list[Answer] = []
         self.tasks: list[dict] = settings["tasks"]
         self.not_exist_tasks: list[str] = []
         self.result: str = ""
 
     def set_answers(self):
-        ans_abs_paths = glob.glob(path.join(self.dir_path, "*"))
-        ans_names = list(map(path.basename, ans_abs_paths))
+        ans_paths = list(self.dir_path.iterdir())
         for task in self.tasks:
-            if task["name"] in ans_names:
-                self.answers.append(
-                    Answer(path.join(self.dir_path, task["name"]), task)
-                )
+            for p in ans_paths:
+                if task["name"] == p.name:
+                    self.answers.append(Answer(p, task))
+                    break
             else:
                 self.not_exist_tasks.append(task["name"])
 
@@ -47,7 +45,7 @@ class Student:
 
 if __name__ == "__main__":
     hoge = Student(
-        "C:/github/auto-scoring-python/tmp/20J5-129@20j5129",
+        Path("C:/github/auto-scoring-python/tmp/20J5-129@20j5129"),
         {"tasks": [{"name": "Expand.java"}, {"name": "Loop.java"}]},
     )
     hoge.set_answers()

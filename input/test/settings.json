@@ -1,5 +1,4 @@
 {
-  "target": "test",
   "tasks": [
     {
       "name": "Arith.java",

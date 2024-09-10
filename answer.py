@@ -1,6 +1,6 @@
 import subprocess
 import zipfile
-from os import path
+from pathlib import Path
 
 from chardet import detect
 
@@ -8,7 +8,7 @@ from chardet import detect
 
 
 class Answer:
-    def __init__(self, file_path: str, task: dict) -> None:
+    def __init__(self, file_path: Path, task: dict) -> None:
         self.file_path = file_path  # .replace("\\", "/")
         self.code_txt: str = ""
         self.result_txt: str = ""
@@ -50,15 +50,14 @@ class Answer:
                         self.code_txt = formating(self.code_txt)
         except Exception as e:
             self.code_txt = (
-                "Open Error : " + self.file_path + "\n手動で確認してください"
+                "Open Error : " + str(self.file_path) + "\n手動で確認してください"
             )
             print(self.file_path, e)
         return self.code_txt
 
     def execute(self):
-        proj_dir_abs_path = path.dirname(path.abspath(__file__))
-        porj_to_jdk_path = path.join("tools", "jdk-21", "bin", "java.exe")
-        jdk_abs_path = path.join(proj_dir_abs_path, porj_to_jdk_path)
+        proj_dir_abs_path = Path(__file__).parent
+        jdk_abs_path = Path(proj_dir_abs_path, "tools", "jdk-21", "bin", "java.exe")
         if self.task_lang == "jar":
             cmd = [jdk_abs_path, "-jar", self.file_path]
         elif self.task_lang == "java":
@@ -99,15 +98,13 @@ def formating(code: str):
     Artistic StyleによるJavaとCのフォーマットを行う。
     toolsディレクトリにあるexeを利用
     """
-    proj_dir_abs_path = path.dirname(path.abspath(__file__))
+    proj_dir_abs_path = Path(__file__).parent
     # porj_to_jdk_path = path.join("tools", "jdk-21", "bin", "java.exe")
     # jdk_abs_path = path.join(proj_dir_abs_path, porj_to_jdk_path)
     # gjf_abs_path = path.join(
     #     proj_dir_abs_path, "tools", "google-java-format-1.23.0-all-deps.jar"
     # )
-    astyle_abs_path = path.join(
-        proj_dir_abs_path, "tools", "astyle-3.6-x64", "astyle.exe"
-    )
+    astyle_abs_path = Path(proj_dir_abs_path, "tools", "astyle-3.6-x64", "astyle.exe")
     try:
         result = subprocess.run(
             # args=[jdk_abs_path, "-jar", gjf_abs_path, "-"],
@@ -136,8 +133,8 @@ def unpack_files(file_path, file_encoding=None):
                     text += "文字コードの推定に失敗しました。一部をエスケープシーケンスで置き換えました。"
                     enc = "utf-8"
                 text += formating(b.decode(enc, errors="backslashreplace").strip())
-                texts += f"{path.basename(zip_info.filename):-^70}\n{text}\n\n"
-                file_list.append(path.basename(zip_info.filename))
+                texts += f"{Path(zip_info.filename).name:-^70}\n{text}\n\n"
+                file_list.append(Path(zip_info.filename).name)
 
     return texts.strip() if len(text) > 0 else "javaファイル無し", file_list
 

@@ -1,0 +1,116 @@
+############################# USER : 01 ##############################
+
+左記の課題ファイル無し or 名前ミス : ミスしているファイルはありません
+
+========================== 課題 : Arith.java ===========================
+
+FILE LIST : ['Arith.java']
+
+-------------------------------- コード ---------------------------------
+
+public class Arith {
+    public static void main(String[] args) {
+        int a, b;
+        a = 13;  // 17J5-789
+        b = 24;
+        System.out.println("a + b = " + (a+b));
+        System.out.println("a - b = " + (a-b));
+        System.out.println("a * b = " + (a*b));
+        System.out.println("a / b = " + (a/b));
+        System.out.printf("a + b = %d\n", a+b);
+        System.out.printf("a - b = %d\n", a-b);
+        System.out.printf("a * b = %d\n", a*b);
+        System.out.printf("a / b = %d\n", a/b);
+    }
+}
+
+
+############################# USER : 01 ##############################
+~~~~~~~~~~~~~~~~~~~~~~~~~~ 実行結果 Arith.java ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+============================= TEST CASE ==============================
+args    = []
+inputs  = 
+"""
+
+"""
+=============================== RESULT ===============================
+a + b = 37
+a - b = -11
+a * b = 312
+a / b = 0
+a + b = 37
+a - b = -11
+a * b = 312
+a / b = 0
+
+
+
+
+
+======================= 課題 : PhoneNumbers.java =======================
+
+FILE LIST : ['PhoneNumbers.java']
+
+-------------------------------- コード ---------------------------------
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+
+public class PhoneNumbers {
+
+    /**
+     * @param args
+     */
+    public static void main(String[] args) {
+        if(args.length < 1) {
+            System.err.println("Usage: java PhoneNumbers <file>");
+            System.exit(1);
+        }
+        HashMap<String,String> phones = new HashMap<>();
+        try {
+            BufferedReader file = new BufferedReader(new FileReader(args[0]));
+            String line;
+            while((line = file.readLine()) != null) {
+                String[] columns = line.split(",");
+                phones.put(columns[0], columns[1]);
+            }
+            file.close();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+            System.exit(1);
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+        BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+        try {
+            String line;
+            while((line = stdin.readLine()) != null) {
+                String number = (String)phones.get(line);
+                if(number == null) {
+                    number = "Unknown user: " + line;
+                }
+                System.out.println(number);
+            }
+            stdin.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+            System.exit(1);
+        }
+    }
+
+}
+
+
+############################# USER : 01 ##############################
+~~~~~~~~~~~~~~~~~~~~~~~ 実行結果 PhoneNumbers.java ~~~~~~~~~~~~~~~~~~~~~~~
+
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Exec Error !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Exec Error !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+
+
+
