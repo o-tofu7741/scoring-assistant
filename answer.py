@@ -8,13 +8,13 @@ from chardet import detect
 
 class Answer:
     def __init__(self, file_path: Path, task: dict) -> None:
-        self.file_path = file_path
+        self.file_path: Path = file_path
         self.code_txt: str = ""
         self.result_txt: str = ""
         self.task_name: str = task["name"]
         self.task_lang: str = task["lang"]
-        self.inputs = task.get("inputs", [{"input": ""}])
-        self.args: list = task.get("args", [{"arg": []}])
+        self.inputs: list[dict[str, str]] = task.get("inputs", [{"input": ""}])
+        self.args: list[dict[str, list[str]]] = task.get("args", [{"arg": []}])
         self.file_list: list[str] = [self.task_name]
 
     def __str__(self) -> str:
@@ -52,43 +52,42 @@ class Answer:
                 "Open Error : " + str(self.file_path) + "\n手動で確認してください"
             )
             print(self.file_path, e)
+        self.code_txt = self.code_txt.strip()
         return self.code_txt
 
     def execute(self):
-        proj_dir_abs_path = Path(__file__).parent
-        jdk_abs_path = Path(proj_dir_abs_path, "tools", "jdk-21", "bin", "java.exe")
         if self.task_lang == "jar":
-            cmd = [jdk_abs_path, "-jar", self.file_path]
+            cmd = ["java", "-jar", self.file_path]
         elif self.task_lang == "java":
-            cmd = [jdk_abs_path, self.file_path]
+            cmd = ["java", self.file_path]
         else:
             return
 
         for arg in self.args if self.args else [{"arg": []}]:
             arg_v: list[str] = arg["arg"]
             for inp in self.inputs if self.inputs else [{"input": ""}]:
-                input_v: str = inp["input"]
+                input_b: bytes = inp["input"].encode()
                 try:
                     result = subprocess.run(
                         args=cmd + arg_v,
-                        encoding="utf-8",
                         stdout=subprocess.PIPE,
                         stderr=subprocess.STDOUT,
-                        input=input_v,
-                        text=True,
+                        input=input_b,
                     )
-                    if len(result.stdout) < 1:
-                        raise Exception("stdout<1")
+                    result_b: bytes = result.stdout
+                    enc: str = detect(result_b)["encoding"] or "utf-8"
+                    result = result_b.decode(enc, errors="backslashreplace")
                     self.result_txt += (
                         f"{' TEST CASE ':=^70}\n"
-                        f"args    = {arg_v}\n"
-                        f"inputs  = \n\"\"\"\n{input_v}\n\"\"\"\n"
+                        f"args  = {arg_v}\n\n"
+                        f"input ↓ \n\"\"\"\n{input_b.decode()}\n\"\"\"\n"
                         f"{' RESULT ':=^70}\n"
-                        f"{result.stdout.strip()}\n\n"
+                        f"{result.strip()}\n\n"
                     )
                 except Exception as e:
-                    print(e)
-                    self.result_txt += f"{' Exec Error ':!^70}"
+                    self.result_txt += f"Exec Error : 手動で確認してください\n{e}\n"
+        self.result_txt = self.result_txt.strip()
+        return self.result_txt
 
 
 def formating(code: str):
@@ -100,7 +99,7 @@ def formating(code: str):
         formatter = Astyle("3.4.7")
         formatter.set_options("--style=google --delete-empty-lines --indent=spaces=2")
         res_code = formatter.format(code)
-        return res_code
+        return res_code.strip()
     except Exception:
         return code
 
@@ -108,6 +107,7 @@ def formating(code: str):
 def unpack_files(file_path, file_encoding=None):
     texts: str = ""
     file_list: list[str] = []
+    text = ""
     with zipfile.ZipFile(file_path, metadata_encoding=file_encoding) as zf:
         for zip_info in zf.infolist():
             if zip_info.filename.endswith((".java", ".txt")):

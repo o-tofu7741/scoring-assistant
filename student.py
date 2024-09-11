@@ -25,7 +25,7 @@ class Student:
     def get_results(self):
         self.result += (
             f"{' USER : ' + self.user + ' ':#^70}\n\n"
-            f"左記の課題ファイル無し or 名前ミス : {' ,'.join(self.not_exist_tasks) if len(self.not_exist_tasks)>0 else 'ミスしているファイルはありません'}\n\n"
+            f"課題ファイル無し or 名前ミス : {', '.join(self.not_exist_tasks) if len(self.not_exist_tasks)>0 else 'ミスしているファイルはありません'}\n\n"
         )
 
         for ans in self.answers:
@@ -36,9 +36,9 @@ class Student:
                 f"FILE LIST : {ans.file_list}\n\n"
                 f"{' コード ':-^70}\n\n"
                 f"{ans.code_txt}\n\n"
-                f"{' USER : ' + self.user + ' ':#^70}\n"
+                f"{' USER : ' + self.user + ' ':#^70}\n\n"
                 f"{' 実行結果 ' + ans.task_name + ' ':~^70}\n\n"
-                f"{ans.result_txt}\n\n\n\n"
+                f"{ans.result_txt}\n\n"
             )
 
 
