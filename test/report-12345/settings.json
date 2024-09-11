@@ -7,10 +7,17 @@
     {
       "name": "PhoneNumbers.java",
       "lang": "java",
+      "compile_args": [
+        {
+          "arg": [
+            ""
+          ]
+        }
+      ],
       "args": [
         {
           "arg": [
-            "C:\\Users\\hoge\\fuga\\scoring-assistant\\test\\oop\\06\\phones.csv"
+            ".\\tmp\\oop\\06\\phones.csv"
           ]
         }
       ],
