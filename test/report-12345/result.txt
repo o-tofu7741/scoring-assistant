@@ -36,10 +36,10 @@ input ↓
 
 """
 =============================== RESULT ===============================
-a + b = 37
-a - b = -11
-a * b = 312
-a / b = 0
+a + b = 37
+a - b = -11
+a * b = 312
+a / b = 0
 a + b = 37
 a - b = -11
 a * b = 312
@@ -108,7 +108,7 @@ public class PhoneNumbers {
 ~~~~~~~~~~~~~~~~~~~~~~~ 実行結果 PhoneNumbers.java ~~~~~~~~~~~~~~~~~~~~~~~
 
 ============================= TEST CASE ==============================
-args  = ['.\\tmp\\oop\\06\\phones.csv']
+args  = ['./test/report-12345/phones.csv']
 
 input ↓ 
 """
@@ -118,7 +118,7 @@ User A
 090-0000-0000
 
 ============================= TEST CASE ==============================
-args  = ['.\\tmp\\oop\\06\\phones.csv']
+args  = ['./test/report-12345/phones.csv']
 
 input ↓ 
 """
