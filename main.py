@@ -52,6 +52,7 @@ def main():
         encoding="utf-8",
     ) as f:
         for stu in students:
+            print(stu.user)
             stu.set_answers()
             stu.get_results()
             f.write(stu.result)
