@@ -52,6 +52,7 @@ class Answer:
                 "Open Error : " + str(self.file_path) + "\n手動で確認してください"
             )
             print(self.file_path, e)
+        self.code_txt = self.code_txt.strip()
         return self.code_txt
 
     def execute(self):
@@ -80,13 +81,15 @@ class Answer:
                     result = result_b.decode(enc, errors="backslashreplace")
                     self.result_txt += (
                         f"{' TEST CASE ':=^70}\n"
-                        f"args    = {arg_v}\n"
-                        f"inputs  = \n\"\"\"\n{input_b.decode()}\n\"\"\"\n"
+                        f"args  = {arg_v}\n\n"
+                        f"input ↓ \n\"\"\"\n{input_b.decode()}\n\"\"\"\n"
                         f"{' RESULT ':=^70}\n"
                         f"{result.strip()}\n\n"
                     )
                 except Exception as e:
                     self.result_txt += f"Exec Error : 手動で確認してください\n{e}\n"
+        self.result_txt = self.result_txt.strip()
+        return self.result_txt
 
 
 def formating(code: str):
@@ -98,7 +101,7 @@ def formating(code: str):
         formatter = Astyle("3.4.7")
         formatter.set_options("--style=google --delete-empty-lines --indent=spaces=2")
         res_code = formatter.format(code)
-        return res_code
+        return res_code.strip()
     except Exception:
         return code
 
