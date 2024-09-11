@@ -17,7 +17,7 @@
       "args": [
         {
           "arg": [
-            ".\\tmp\\oop\\06\\phones.csv"
+            "./test/report-12345/phones.csv"
           ]
         }
       ],
