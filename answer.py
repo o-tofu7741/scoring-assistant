@@ -2,9 +2,8 @@ import subprocess
 import zipfile
 from pathlib import Path
 
+from astyle_py import Astyle
 from chardet import detect
-
-# from astyle_py import Astyle
 
 
 class Answer:
@@ -97,22 +96,11 @@ def formating(code: str):
     Artistic StyleによるJavaとCのフォーマットを行う。
     toolsディレクトリにあるexeを利用
     """
-    proj_dir_abs_path = Path(__file__).parent
-    # porj_to_jdk_path = path.join("tools", "jdk-21", "bin", "java.exe")
-    # jdk_abs_path = path.join(proj_dir_abs_path, porj_to_jdk_path)
-    # gjf_abs_path = path.join(
-    #     proj_dir_abs_path, "tools", "google-java-format-1.23.0-all-deps.jar"
-    # )
-    astyle_abs_path = Path(proj_dir_abs_path, "tools", "astyle-3.6-x64", "astyle.exe")
     try:
-        result = subprocess.run(
-            args=[astyle_abs_path, "--style=google", "--delete-empty-lines"],
-            input=code,
-            text=True,
-            stdout=subprocess.PIPE,
-        )
-        result.check_returncode()
-        return result.stdout
+        formatter = Astyle("3.4.7")
+        formatter.set_options("--style=google --delete-empty-lines --indent=spaces=2")
+        res_code = formatter.format(code)
+        return res_code
     except Exception:
         return code
 
@@ -138,9 +126,8 @@ def unpack_files(file_path, file_encoding=None):
 
 
 if __name__ == "__main__":
-    print(
-        formating(
-            """
+    res = formating(
+        """
             public class ArrayTest {
             public static void main(String[] args){
             int[] array = new int[10];
@@ -157,5 +144,5 @@ if __name__ == "__main__":
             }
             }
             """
-        )
     )
+    print(res)
