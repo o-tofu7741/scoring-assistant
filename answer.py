@@ -56,12 +56,10 @@ class Answer:
         return self.code_txt
 
     def execute(self):
-        proj_dir_abs_path = Path(__file__).parent
-        jdk_abs_path = Path(proj_dir_abs_path, "tools", "jdk-21", "bin", "java.exe")
         if self.task_lang == "jar":
-            cmd = [jdk_abs_path, "-jar", self.file_path]
+            cmd = ["java", "-jar", self.file_path]
         elif self.task_lang == "java":
-            cmd = [jdk_abs_path, self.file_path]
+            cmd = ["java", self.file_path]
         else:
             return
 
