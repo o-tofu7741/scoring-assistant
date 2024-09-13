@@ -51,6 +51,7 @@ def main():
         "w",
         encoding="utf-8",
     ) as f:
+        students.sort(key=lambda stu: stu.user)
         for stu in students:
             print(stu.user)
             stu.set_answers()
