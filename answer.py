@@ -13,8 +13,9 @@ class Answer:
         self.result_txt: str = ""
         self.task_name: str = task["name"]
         self.task_lang: str = task["lang"]
-        self.inputs: list[dict[str, str]] = task.get("inputs", [{"input": ""}])
-        self.args: list[dict[str, list[str]]] = task.get("args", [{"arg": []}])
+        self.inputs: list[dict[str, str]] = task.get("inputs", [{"inputs_value": ""}])
+        self.args: list[dict[str, list[str]]] = task.get("args", [{"args_value": []}])
+        self.classpath: list[str] | None = task.get("classpath", None)
         self.file_list: list[str] = [self.task_name]
 
     def __str__(self) -> str:
@@ -56,32 +57,61 @@ class Answer:
         return self.code_txt
 
     def execute(self):
+        # 対象ユーザのディレクトリでコンパイル
+        if self.task_lang == "java":
+            cmd = ["javac"]
+            if self.classpath is not None and len(self.classpath[0]) > 1:
+                cmd += ["-classpath", ";".join(self.classpath)]
+            cmd += [self.file_path.name]
+            result = subprocess.run(
+                args=cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                cwd=self.file_path.parent,
+            )
+            result_b: bytes = result.stdout
+            enc: str = detect(result_b)["encoding"] or "utf-8"
+            result = result_b.decode(enc, errors="backslashreplace")
+            self.result_txt += f"{' COMPILE RESULT ':-^70}\n" f"{result.strip()}\n"
+
+        # 対象ユーザのディレクトリで実行
         if self.task_lang == "jar":
-            cmd = ["java", "-jar", self.file_path]
+            cmd = ["java", "-jar", self.file_path.name]
         elif self.task_lang == "java":
-            cmd = ["java", self.file_path]
+            cmd = ["java"]
+            if self.classpath is not None and len(self.classpath[0]) > 1:
+                import os
+
+                # windowsとそれ以外だとコマンドの区切り文字が違うため...
+                if os.name == "nt":
+                    sep = ";"
+                else:
+                    sep = ":"
+                cmd += ["--class-path", f"{sep}".join(self.classpath + ["."])]
+            cmd += [self.file_path.stem]
         else:
             return
 
-        for arg in self.args if self.args else [{"arg": []}]:
-            arg_v: list[str] = arg["arg"]
-            for inp in self.inputs if self.inputs else [{"input": ""}]:
-                input_b: bytes = inp["input"].encode()
+        for arg in self.args if self.args else [{"args_value": []}]:
+            arg_v: list[str] = arg["args_value"]
+            for inp in self.inputs if self.inputs else [{"inputs_value": ""}]:
+                inputs: str = inp["inputs_value"]
                 try:
                     result = subprocess.run(
                         args=cmd + arg_v,
                         stdout=subprocess.PIPE,
                         stderr=subprocess.STDOUT,
-                        input=input_b,
+                        input=inputs.encode(),
+                        cwd=self.file_path.parent,
                     )
                     result_b: bytes = result.stdout
                     enc: str = detect(result_b)["encoding"] or "utf-8"
                     result = result_b.decode(enc, errors="backslashreplace")
                     self.result_txt += (
-                        f"{' TEST CASE ':=^70}\n"
+                        f"{' TEST CASE ':-^70}\n"
                         f"args  = {arg_v}\n\n"
-                        f"input ↓ \n\"\"\"\n{input_b.decode()}\n\"\"\"\n"
-                        f"{' RESULT ':=^70}\n"
+                        f"input ↓ \n\"\"\"\n{inputs}\n\"\"\"\n"
+                        f"{' RESULT ':-^70}\n"
                         f"{result.strip()}\n\n"
                     )
                 except Exception as e:
