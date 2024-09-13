@@ -1,4 +1,4 @@
-############################# USER : 01 ##############################
+########################### USER : user-01 ###########################
 
 課題ファイル無し or 名前ミス : ミスしているファイルはありません
 
@@ -24,8 +24,6 @@ public class Arith {
   }
 }
 
-############################# USER : 01 ##############################
-
 ~~~~~~~~~~~~~~~~~~~~~~~~~~ 実行結果 Arith.java ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 ============================= TEST CASE ==============================
@@ -44,6 +42,46 @@ a + b = 37
 a - b = -11
 a * b = 312
 a / b = 0
+
+======================== 課題 : InputLoop.java =========================
+
+FILE LIST : ['InputLoop.java']
+
+-------------------------------- コード ---------------------------------
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+public class InputLoop {
+  public static void main(String[] args) {
+    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    try {
+      String line;
+      while((line = reader.readLine()) != null) {
+        System.out.println(line);
+      }
+      reader.close();
+    } catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+}
+
+~~~~~~~~~~~~~~~~~~~~~~~~ 実行結果 InputLoop.java ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+============================= TEST CASE ==============================
+args  = []
+
+input ↓ 
+"""
+hoge
+fuga
+fin
+"""
+=============================== RESULT ===============================
+hoge
+fuga
+fin
 
 ======================= 課題 : PhoneNumbers.java =======================
 
@@ -103,12 +141,10 @@ public class PhoneNumbers {
 
 }
 
-############################# USER : 01 ##############################
-
 ~~~~~~~~~~~~~~~~~~~~~~~ 実行結果 PhoneNumbers.java ~~~~~~~~~~~~~~~~~~~~~~~
 
 ============================= TEST CASE ==============================
-args  = ['./test/report-12345/phones.csv']
+args  = ['./test/share/phones.csv', '']
 
 input ↓ 
 """
@@ -118,7 +154,7 @@ User A
 090-0000-0000
 
 ============================= TEST CASE ==============================
-args  = ['./test/report-12345/phones.csv']
+args  = ['./test/share/phones.csv', '']
 
 input ↓ 
 """
@@ -126,4 +162,509 @@ User B
 """
 =============================== RESULT ===============================
 090-1111-1111
+
+======================== 課題 : ListSample.java ========================
+
+FILE LIST : ['ListSample.java']
+
+-------------------------------- コード ---------------------------------
+
+public class ListSample {
+  Cell head = null; // reference to the head of the list.
+
+  ListSample() {
+    Cell c;
+    // insert cells into the head of the list.
+    for(int i = 0; i < 3; i++) {
+      c = new Cell();
+      c.value = i;
+      c.next = head;
+      head = c;
+    }
+    // print the list.
+    c = head;
+    while(c != null) {
+      System.out.print(c.value + " ");
+      c = c.next;
+    }
+    System.out.println();
+  }
+
+  public static void main(String[] args) {
+    new ListSample();
+  }
+}
+
+~~~~~~~~~~~~~~~~~~~~~~~~ 実行結果 ListSample.java ~~~~~~~~~~~~~~~~~~~~~~~~
+
+============================= TEST CASE ==============================
+args  = []
+
+input ↓ 
+"""
+
+"""
+=============================== RESULT ===============================
+/home/yuta/github/scoring-assistant/test/report-12345/user-01/ListSample.java:2: エラー: シンボルを見つけられません
+  Cell head = null; // reference to the head of the list.
+  ^
+  シンボル:   クラス Cell
+  場所: クラス ListSample
+/home/yuta/github/scoring-assistant/test/report-12345/user-01/ListSample.java:5: エラー: シンボルを見つけられません
+    Cell c;
+    ^
+  シンボル:   クラス Cell
+  場所: クラス ListSample
+/home/yuta/github/scoring-assistant/test/report-12345/user-01/ListSample.java:9: エラー: シンボルを見つけられません
+      c = new Cell();
+              ^
+  シンボル:   クラス Cell
+  場所: クラス ListSample
+エラー3個
+エラー: コンパイルが失敗しました
+
+======================= 課題 : ListLibArray.jar ========================
+
+FILE LIST : ['ListLibArray.jar', 'List.java', 'ListLibSample.java']
+
+-------------------------------- コード ---------------------------------
+
+------------------------------List.java-------------------------------
+package org.acm.kazutaka.ListLib;
+public class List {
+
+  private int size = 3; // size of values array.
+  private int[] values; // keep the contents of this List.
+  private int tail;     // indicates the last content.
+
+  public List() {
+    values = new int[size];
+    tail = -1;
+  }
+
+  public void printList() {
+    for(int i = 0; i <= tail; i++) {
+      System.out.print(values[i] + " ");
+    }
+    System.out.println();
+  }
+
+  public void insert(int v) {
+    tail++;
+    if(tail >= values.length) {
+      expandArray();
+    }
+    for(int i = tail; i > 0; i--) {
+      values[i] = values[i-1];
+    }
+    values[0] = v;
+  }
+
+  private void expandArray() {
+    size *= 2;
+    int[] newArray = new int[size];
+    for(int i = 0; i < values.length; i++) {
+      newArray[i] = values[i];
+    }
+    values = newArray;
+  }
+
+  public void append(int v) {
+    tail++;
+    if(tail >= values.length) {
+      expandArray();
+    }
+    values[tail] = v;
+  }
+
+  public void delete(int v) {
+    int target = 0;
+    for(int i = 0; i <= tail; i++) {
+      if(values[i] == v) {
+        continue;
+      }
+      if(i != target) {
+        values[target] = values[i];
+      }
+      target++;
+    }
+    tail = target - 1;
+  }
+
+}
+
+--------------------------ListLibSample.java--------------------------
+package org.acm.kazutaka.ListLibSample;
+
+import org.acm.kazutaka.ListLib.List;
+
+public class ListLibSample {
+
+  ListLibSample() {
+    List l = new List();
+    // insert cells.
+    for(int i = 0; i < 3; i++) {
+      l.insert(i);
+    }
+    l.insert(3);
+    l.append(-1);
+    l.append(-1);
+    l.delete(2);
+    l.delete(1);
+    l.delete(-1);
+    l.printList();
+  }
+
+  public static void main(String[] av) {
+    new ListLibSample();
+  }
+
+}
+
+~~~~~~~~~~~~~~~~~~~~~~~ 実行結果 ListLibArray.jar ~~~~~~~~~~~~~~~~~~~~~~~~
+
+============================= TEST CASE ==============================
+args  = []
+
+input ↓ 
+"""
+
+"""
+=============================== RESULT ===============================
+3 0
+
+########################### USER : user-02 ###########################
+
+課題ファイル無し or 名前ミス : ミスしているファイルはありません
+
+========================== 課題 : Arith.java ===========================
+
+FILE LIST : ['Arith.java']
+
+-------------------------------- コード ---------------------------------
+
+public class Arith {
+  public static void main(String[] args) {
+    int a, b;
+    a = 13;  // 17J5-789
+    b = 24;
+    System.out.println("a + b = " + (a+b));
+    System.out.println("a - b = " + (a-b));
+    System.out.println("a * b = " + (a*b));
+    System.out.println("a / b = " + (a/b));
+    System.out.printf("a + b = %d\n", a+b);
+    System.out.printf("a - b = %d\n", a-b);
+    System.out.printf("a * b = %d\n", a*b);
+    System.out.printf("a / b = %d\n", a/b);
+  }
+}
+
+~~~~~~~~~~~~~~~~~~~~~~~~~~ 実行結果 Arith.java ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+============================= TEST CASE ==============================
+args  = []
+
+input ↓ 
+"""
+
+"""
+=============================== RESULT ===============================
+a + b = 37
+a - b = -11
+a * b = 312
+a / b = 0
+a + b = 37
+a - b = -11
+a * b = 312
+a / b = 0
+
+======================== 課題 : InputLoop.java =========================
+
+FILE LIST : ['InputLoop.java']
+
+-------------------------------- コード ---------------------------------
+
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
+public class InputLoop {
+  public static void main(String[] args) {
+    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in));
+    try {
+      String line;
+      while((line = reader.readLine()) != null) {
+        System.out.println(line);
+      }
+      reader.close();
+    } catch(Exception e) {
+      e.printStackTrace();
+    }
+  }
+}
+
+~~~~~~~~~~~~~~~~~~~~~~~~ 実行結果 InputLoop.java ~~~~~~~~~~~~~~~~~~~~~~~~~
+
+============================= TEST CASE ==============================
+args  = []
+
+input ↓ 
+"""
+hoge
+fuga
+fin
+"""
+=============================== RESULT ===============================
+hoge
+fuga
+fin
+
+======================= 課題 : PhoneNumbers.java =======================
+
+FILE LIST : ['PhoneNumbers.java']
+
+-------------------------------- コード ---------------------------------
+
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.util.HashMap;
+
+public class PhoneNumbers {
+
+  /**
+   * @param args
+   */
+  public static void main(String[] args) {
+    if(args.length < 1) {
+      System.err.println("Usage: java PhoneNumbers <file>");
+      System.exit(1);
+    }
+    HashMap<String,String> phones = new HashMap<>();
+    try {
+      BufferedReader file = new BufferedReader(new FileReader(args[0]));
+      String line;
+      while((line = file.readLine()) != null) {
+        String[] columns = line.split(",");
+        phones.put(columns[0], columns[1]);
+      }
+      file.close();
+    } catch (FileNotFoundException e) {
+      e.printStackTrace();
+      System.exit(1);
+    } catch (IOException e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
+    BufferedReader stdin = new BufferedReader(new InputStreamReader(System.in));
+    try {
+      String line;
+      while((line = stdin.readLine()) != null) {
+        String number = (String)phones.get(line);
+        if(number == null) {
+          number = "Unknown user: " + line;
+        }
+        System.out.println(number);
+      }
+      stdin.close();
+    } catch (IOException e) {
+      e.printStackTrace();
+      System.exit(1);
+    }
+  }
+
+}
+
+~~~~~~~~~~~~~~~~~~~~~~~ 実行結果 PhoneNumbers.java ~~~~~~~~~~~~~~~~~~~~~~~
+
+============================= TEST CASE ==============================
+args  = ['./test/share/phones.csv', '']
+
+input ↓ 
+"""
+User A
+"""
+=============================== RESULT ===============================
+090-0000-0000
+
+============================= TEST CASE ==============================
+args  = ['./test/share/phones.csv', '']
+
+input ↓ 
+"""
+User B
+"""
+=============================== RESULT ===============================
+090-1111-1111
+
+======================== 課題 : ListSample.java ========================
+
+FILE LIST : ['ListSample.java']
+
+-------------------------------- コード ---------------------------------
+
+public class ListSample {
+  Cell head = null; // reference to the head of the list.
+
+  ListSample() {
+    Cell c;
+    // insert cells into the head of the list.
+    for(int i = 0; i < 3; i++) {
+      c = new Cell();
+      c.value = i;
+      c.next = head;
+      head = c;
+    }
+    // print the list.
+    c = head;
+    while(c != null) {
+      System.out.print(c.value + " ");
+      c = c.next;
+    }
+    System.out.println();
+  }
+
+  public static void main(String[] args) {
+    new ListSample();
+  }
+}
+
+~~~~~~~~~~~~~~~~~~~~~~~~ 実行結果 ListSample.java ~~~~~~~~~~~~~~~~~~~~~~~~
+
+============================= TEST CASE ==============================
+args  = []
+
+input ↓ 
+"""
+
+"""
+=============================== RESULT ===============================
+/home/yuta/github/scoring-assistant/test/report-12345/user-02/ListSample.java:2: エラー: シンボルを見つけられません
+  Cell head = null; // reference to the head of the list.
+  ^
+  シンボル:   クラス Cell
+  場所: クラス ListSample
+/home/yuta/github/scoring-assistant/test/report-12345/user-02/ListSample.java:5: エラー: シンボルを見つけられません
+    Cell c;
+    ^
+  シンボル:   クラス Cell
+  場所: クラス ListSample
+/home/yuta/github/scoring-assistant/test/report-12345/user-02/ListSample.java:9: エラー: シンボルを見つけられません
+      c = new Cell();
+              ^
+  シンボル:   クラス Cell
+  場所: クラス ListSample
+エラー3個
+エラー: コンパイルが失敗しました
+
+======================= 課題 : ListLibArray.jar ========================
+
+FILE LIST : ['ListLibArray.jar', 'List.java', 'ListLibSample.java']
+
+-------------------------------- コード ---------------------------------
+
+------------------------------List.java-------------------------------
+package org.acm.kazutaka.ListLib;
+public class List {
+
+  private int size = 3; // size of values array.
+  private int[] values; // keep the contents of this List.
+  private int tail;     // indicates the last content.
+
+  public List() {
+    values = new int[size];
+    tail = -1;
+  }
+
+  public void printList() {
+    for(int i = 0; i <= tail; i++) {
+      System.out.print(values[i] + " ");
+    }
+    System.out.println();
+  }
+
+  public void insert(int v) {
+    tail++;
+    if(tail >= values.length) {
+      expandArray();
+    }
+    for(int i = tail; i > 0; i--) {
+      values[i] = values[i-1];
+    }
+    values[0] = v;
+  }
+
+  private void expandArray() {
+    size *= 2;
+    int[] newArray = new int[size];
+    for(int i = 0; i < values.length; i++) {
+      newArray[i] = values[i];
+    }
+    values = newArray;
+  }
+
+  public void append(int v) {
+    tail++;
+    if(tail >= values.length) {
+      expandArray();
+    }
+    values[tail] = v;
+  }
+
+  public void delete(int v) {
+    int target = 0;
+    for(int i = 0; i <= tail; i++) {
+      if(values[i] == v) {
+        continue;
+      }
+      if(i != target) {
+        values[target] = values[i];
+      }
+      target++;
+    }
+    tail = target - 1;
+  }
+
+}
+
+--------------------------ListLibSample.java--------------------------
+package org.acm.kazutaka.ListLibSample;
+
+import org.acm.kazutaka.ListLib.List;
+
+public class ListLibSample {
+
+  ListLibSample() {
+    List l = new List();
+    // insert cells.
+    for(int i = 0; i < 3; i++) {
+      l.insert(i);
+    }
+    l.insert(3);
+    l.append(-1);
+    l.append(-1);
+    l.delete(2);
+    l.delete(1);
+    l.delete(-1);
+    l.printList();
+  }
+
+  public static void main(String[] av) {
+    new ListLibSample();
+  }
+
+}
+
+~~~~~~~~~~~~~~~~~~~~~~~ 実行結果 ListLibArray.jar ~~~~~~~~~~~~~~~~~~~~~~~~
+
+============================= TEST CASE ==============================
+args  = []
+
+input ↓ 
+"""
+
+"""
+=============================== RESULT ===============================
+3 0
 

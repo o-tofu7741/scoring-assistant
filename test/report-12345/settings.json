@@ -5,30 +5,45 @@
       "lang": "java"
     },
     {
+      "name": "InputLoop.java",
+      "lang": "java",
+      "inputs": [
+        {
+          "inputs_value": "hoge\nfuga\nfin"
+        }
+      ]
+    },
+    {
       "name": "PhoneNumbers.java",
       "lang": "java",
-      "compile_args": [
-        {
-          "arg": [
-            ""
-          ]
-        }
-      ],
       "args": [
         {
-          "arg": [
-            "./test/report-12345/phones.csv"
+          "args_value": [
+            "./test/share/phones.csv",
+            ""
           ]
         }
       ],
       "inputs": [
         {
-          "input": "User A"
+          "inputs_value": "User A"
         },
         {
-          "input": "User B"
+          "inputs_value": "User B"
         }
       ]
+    },
+    {
+      "name": "ListSample.java",
+      "lang": "java",
+      "compile_args": [
+        "-sourcepath",
+        "./test/share/"
+      ]
+    },
+    {
+      "name": "ListLibArray.jar",
+      "lang": "jar"
     }
   ]
 }
