@@ -2,6 +2,8 @@ import json
 import sys
 from pathlib import Path
 
+from jsonschema import validate
+
 from student import Student
 
 
@@ -28,14 +30,23 @@ def main():
     # settings.jsonは対象の回の提出物ディレクトリ内に配置
     settings_file_name = "settings.json"
     settings_file_path = Path(target_dir_path, settings_file_name)
+    jsonschema_file_name = "json-schema.json"
+    jsonschema_path = Path(Path(__file__).parent, jsonschema_file_name)
 
     if not settings_file_path.is_file():
+        print(f"Error : {target_dir_path} 内に {settings_file_name} が存在しません")
+        exit(1)
+
+    if not jsonschema_path.is_file():
         print(f"Error : {target_dir_path} 内に {settings_file_name} が存在しません")
         exit(1)
 
     try:
         with open(settings_file_path) as f:
             settings = json.load(f)
+        with open(jsonschema_path) as f:
+            schema = json.load(f)
+        validate(instance=settings, schema=schema)
     except Exception as e:
         print(f"Error : {settings_file_name} 解析時にエラーが発生しました\n{e}")
         exit(1)
