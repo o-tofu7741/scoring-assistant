@@ -19,7 +19,7 @@
       "args": [
         {
           "args_value": [
-            "./test/share/phones.csv",
+            "/home/yuta/github/scoring-assistant/test/share/phones.csv",
             ""
           ]
         }
@@ -36,9 +36,8 @@
     {
       "name": "ListSample.java",
       "lang": "java",
-      "compile_args": [
-        "-sourcepath",
-        "./test/share/"
+      "classpath": [
+        "/home/yuta/github/scoring-assistant/test/share"
       ]
     },
     {

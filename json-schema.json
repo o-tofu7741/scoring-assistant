@@ -45,7 +45,7 @@
               ]
             }
           },
-          "compile_args": {
+          "classpath": {
             "type": "array",
             "items": {
               "type": "string"
