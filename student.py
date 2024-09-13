@@ -36,7 +36,7 @@ class Student:
                 f"FILE LIST : {ans.file_list}\n\n"
                 f"{' コード ':-^70}\n\n"
                 f"{ans.code_txt}\n\n"
-                f"{' 実行結果 ' + ans.task_name + ' ':~^70}\n\n"
+                f"{' 実行結果 ' + ans.task_name + ' ':-^70}\n\n"
                 f"{ans.result_txt}\n\n"
             )
 

@@ -19,12 +19,12 @@
             "items": {
               "type": "object",
               "properties": {
-                "input": {
+                "inputs_value": {
                   "type": "string"
                 }
               },
               "required": [
-                "input"
+                "inputs_value"
               ]
             }
           },
@@ -33,7 +33,7 @@
             "items": {
               "type": "object",
               "properties": {
-                "arg": {
+                "args_value": {
                   "type": "array",
                   "items": {
                     "type": "string"
@@ -41,8 +41,14 @@
                 }
               },
               "required": [
-                "arg"
+                "args_value"
               ]
+            }
+          },
+          "classpath": {
+            "type": "array",
+            "items": {
+              "type": "string"
             }
           }
         },
