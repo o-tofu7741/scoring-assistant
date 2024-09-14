@@ -39,7 +39,4 @@ class Student:
                 f"{' 実行結果 ' + ans.task_name + ' ':-^70}\n\n"
                 f"{ans.result_txt}\n\n"
             )
-
-
-if __name__ == "__main__":
-    pass
+        print(f"FINISH : {self.user}")

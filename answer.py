@@ -153,26 +153,3 @@ def unpack_files(file_path, file_encoding=None):
                 file_list.append(Path(zip_info.filename).name)
 
     return texts.strip() if len(text) > 0 else "javaファイル無し", file_list
-
-
-if __name__ == "__main__":
-    res = formating(
-        """
-            public class ArrayTest {
-            public static void main(String[] args){
-            int[] array = new int[10];
-
-                for(int i = 0; i < array.length; i++){
-            array[i] = (i+1)*(i+1);
-                }
-
-
-                for(int i = array.length - 1; i >=0; i--)
-                {
-                            System.out.println(array[i]);
-                }
-            }
-            }
-            """
-    )
-    print(res)
