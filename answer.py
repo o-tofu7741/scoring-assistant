@@ -1,9 +1,17 @@
+import os
+import re
 import subprocess
 import zipfile
 from pathlib import Path
 
 from astyle_py import Astyle
 from chardet import detect
+
+# windowsとそれ以外だとコマンドの区切り文字が違うため...
+if os.name == "nt":
+    sep = ";"
+else:
+    sep = ":"
 
 
 class Answer:
@@ -16,6 +24,8 @@ class Answer:
         self.inputs: list[dict[str, str]] = task.get("inputs", [{"inputs_value": ""}])
         self.args: list[dict[str, list[str]]] = task.get("args", [{"args_value": []}])
         self.classpath: list[str] | None = task.get("classpath", None)
+        if self.classpath is not None:
+            self.classpath = [str(Path(cp).resolve()) for cp in self.classpath]
         self.file_list: list[str] = [self.task_name]
 
     def __str__(self) -> str:
@@ -46,8 +56,22 @@ class Answer:
                     if enc is None:
                         enc = "utf-8"
                     self.code_txt = b.decode(enc, errors="backslashreplace")
+
+                    # packageの除外とファイルの作成
                     if self.task_lang == "java":
-                        self.code_txt = formating(self.code_txt)
+                        self.code_txt = re.sub(
+                            "(^package.*)",
+                            r"// \1 // commented out by scoring-assistant",
+                            formating(self.code_txt),
+                            flags=re.MULTILINE,
+                        )
+                        self.file_path = Path(
+                            self.file_path.parent, "format", self.file_path.name
+                        )
+                        self.file_path.parent.mkdir(exist_ok=True)
+                        with self.file_path.open(mode="w") as ff:
+                            ff.write(self.code_txt)
+
         except Exception as e:
             self.code_txt = (
                 "Open Error : " + str(self.file_path) + "\n手動で確認してください"
@@ -61,7 +85,7 @@ class Answer:
         if self.task_lang == "java":
             cmd = ["javac"]
             if self.classpath is not None and len(self.classpath[0]) > 1:
-                cmd += ["-classpath", ";".join(self.classpath)]
+                cmd += ["-classpath", sep.join(self.classpath)]
             cmd += [self.file_path.name]
             result = subprocess.run(
                 args=cmd,
@@ -72,7 +96,11 @@ class Answer:
             result_b: bytes = result.stdout
             enc: str = detect(result_b)["encoding"] or "utf-8"
             result = result_b.decode(enc, errors="backslashreplace")
-            self.result_txt += f"{' COMPILE RESULT ':-^70}\n" f"{result.strip()}\n"
+            self.result_txt += (
+                f"{' COMPILE RESULT ':-^70}\n"
+                # f"CMD = {' '.join(cmd)}\n\n"
+                f"{result.strip()}\n"
+            )
 
         # 対象ユーザのディレクトリで実行
         if self.task_lang == "jar":
@@ -80,14 +108,7 @@ class Answer:
         elif self.task_lang == "java":
             cmd = ["java"]
             if self.classpath is not None and len(self.classpath[0]) > 1:
-                import os
-
-                # windowsとそれ以外だとコマンドの区切り文字が違うため...
-                if os.name == "nt":
-                    sep = ";"
-                else:
-                    sep = ":"
-                cmd += ["--class-path", f"{sep}".join(self.classpath + ["."])]
+                cmd += ["--class-path", sep.join(self.classpath + ["."])]
             cmd += [self.file_path.stem]
         else:
             return
@@ -96,9 +117,10 @@ class Answer:
             arg_v: list[str] = arg["args_value"]
             for inp in self.inputs if self.inputs else [{"inputs_value": ""}]:
                 inputs: str = inp["inputs_value"]
+                cmd += arg_v
                 try:
                     result = subprocess.run(
-                        args=cmd + arg_v,
+                        args=cmd,
                         stdout=subprocess.PIPE,
                         stderr=subprocess.STDOUT,
                         input=inputs.encode(),
@@ -112,6 +134,7 @@ class Answer:
                         f"args  = {arg_v}\n\n"
                         f"input ↓ \n\"\"\"\n{inputs}\n\"\"\"\n"
                         f"{' RESULT ':-^70}\n"
+                        # f"CMD = {' '.join(cmd)}\n\n"
                         f"{result.strip()}\n\n"
                     )
                 except Exception as e:
