@@ -1,5 +1,6 @@
 import json
 import sys
+from multiprocessing import Pool, cpu_count
 from pathlib import Path
 
 from jsonschema import validate
@@ -43,7 +44,7 @@ def main():
 
     try:
         with open(settings_file_path) as f:
-            settings = json.load(f)
+            settings: dict = json.load(f)
         with open(jsonschema_path) as f:
             schema = json.load(f)
         validate(instance=settings, schema=schema)
@@ -51,12 +52,13 @@ def main():
         print(f"Error : {settings_file_name} 解析時にエラーが発生しました\n{e}")
         exit(1)
 
-    student_dir_paths = [stu for stu in target_dir_path.iterdir() if stu.is_dir()]
-    students: list[Student] = []
-
     print("採点中...")
-    for stu_path in student_dir_paths:
-        students.append(Student(stu_path, settings))
+    student_dir_paths = [stu for stu in target_dir_path.iterdir() if stu.is_dir()]
+    stu_vals = [(settings, stu) for stu in student_dir_paths]
+
+    with Pool(cpu_count()) as pool:
+        students = pool.map(exec_stu, stu_vals)
+
     with open(
         Path(target_dir_path, "result.txt"),
         "w",
@@ -64,11 +66,16 @@ def main():
     ) as f:
         students.sort(key=lambda stu: stu.user)
         for stu in students:
-            print(stu.user)
-            stu.set_answers()
-            stu.get_results()
             f.write(stu.result)
     print("採点終了")
+
+
+def exec_stu(values: tuple[dict, Path]):
+    settings, stu_path = values
+    stu: Student = Student(stu_path, settings)
+    stu.set_answers()
+    stu.get_results()
+    return stu
 
 
 if __name__ == "__main__":
