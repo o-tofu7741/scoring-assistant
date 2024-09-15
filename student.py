@@ -6,11 +6,12 @@ from answer import Answer
 class Student:
     def __init__(self, student_dir_path: Path, settings: dict) -> None:
         self.dir_path = student_dir_path
-        self.user = self.dir_path.name  # .split("@")[0]
+        self.user = self.dir_path.name.split("@")[-1]
         self.answers: list[Answer] = []
         self.tasks: list[dict] = settings["tasks"]
         self.not_exist_tasks: list[str] = []
         self.result: str = ""
+        print(f"START  : {self.user}")
 
     def set_answers(self):
         ans_paths = list(self.dir_path.iterdir())
@@ -39,7 +40,4 @@ class Student:
                 f"{' 実行結果 ' + ans.task_name + ' ':-^70}\n\n"
                 f"{ans.result_txt}\n\n"
             )
-
-
-if __name__ == "__main__":
-    pass
+        print(f"FINISH : {self.user}")

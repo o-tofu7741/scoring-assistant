@@ -7,20 +7,30 @@ manabaで提出されたjavaとjarの課題を実行して、実行結果を取�
 - `python=3.11`
 
 ## 使い方
-1. 以下の構造のディレクトリを対象にし、対象内に各種情報を記載した`settings.json`を配置する
+1. report-12345のような構造のディレクトリを対象にし、対象内に各種情報を記載した`settings.json`を配置する
     ```
-    report-12345/
-    ├── user-01
-    │   ├── Arith.java
-    │   └── PhoneNumbers.java
-    ├── user-02
-    │   ├── Arith.java
-    │   └── PhoneNumbers.java
-    ├── phones.csv              // (任意)
-    └── settings.json
+    test/
+    ├── report-12345
+    │   ├── result.txt
+    │   ├── settings.json
+    │   ├── user-01
+    │   │   ├── Arith.java
+    │   │   ├── InputLoop.java
+    │   │   ├── ListLibArray.jar
+    │   │   ├── ListSample.java
+    │   │   └── PhoneNumbers.java
+    │   └── user-02
+    │       ├── Arith.java
+    │       ├── InputLoop.java
+    │       ├── ListLibArray.jar
+    │       ├── ListSample.java
+    │       └── PhoneNumbers.java
+    └── share
+        ├── Cell.java
+        └── phones.csv
     ```
 2. main.pyを実行する。\
-```python main.py [path-to-target-directory]```
+```python main.py ./test/report-12345```
 3. `[path-to-target-directory]`の直下に`result.txt`が出力される
 
 ## `settings.json`について
