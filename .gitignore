@@ -5,6 +5,10 @@ __pycache__/
 tmp/
 *.class
 
+# C言語関連のファイル
+*.out
+*.o
+
 # 以下はmacOSが自動生成するうざい隠しファイル
 .DS_Store
 .AppleDouble
