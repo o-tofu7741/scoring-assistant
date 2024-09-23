@@ -69,6 +69,13 @@ def main():
             f.write(stu.result)
     print("採点終了")
 
+    # *.outファイルを削除
+    for out_file in target_dir_path.rglob("*.out"):
+        try:
+            out_file.unlink()
+        except OSError as e:
+            print(f"Error : {out_file} の削除に失敗しました\n{e}")
+
 
 def exec_stu(values: tuple[dict, Path]):
     settings, stu_path = values
