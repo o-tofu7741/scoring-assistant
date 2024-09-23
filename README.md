@@ -1,10 +1,15 @@
 # Scoring-Assistant
 ## 概要
-manabaで提出されたjavaとjarの課題を実行して、実行結果を取得するツール
+manabaで提出されたjavaとjar、cの課題を実行して、実行結果を取得するツール
 
 ## 利用環境
 - `java`コマンド
+- `gcc`
 - `python=3.11`
+  - `astyle_py`
+  - `chardet`
+  - `jsonschema`
+  - `pathlib`
 
 ## 使い方
 1. report-12345のような構造のディレクトリを対象にし、対象内に各種情報を記載した`settings.json`を配置する
@@ -18,13 +23,17 @@ manabaで提出されたjavaとjarの課題を実行して、実行結果を取�
     │   │   ├── InputLoop.java
     │   │   ├── ListLibArray.jar
     │   │   ├── ListSample.java
-    │   │   └── PhoneNumbers.java
+    │   │   ├── PhoneNumbers.java
+    │   │   ├── report02-1.c
+    │   │   └── report02-2.c
     │   └── user-02
     │       ├── Arith.java
     │       ├── InputLoop.java
     │       ├── ListLibArray.jar
     │       ├── ListSample.java
-    │       └── PhoneNumbers.java
+    │       ├── PhoneNumbers.java
+    │       ├── report02-1.c
+    │       └── report02-2.c
     └── share
         ├── Cell.java
         └── phones.csv
