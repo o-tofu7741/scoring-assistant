@@ -150,36 +150,24 @@ public class PhoneNumbers {
 --------------------------- COMPILE RESULT ---------------------------
 
 ----------------------------- TEST CASE ------------------------------
-args  = ['/home/yuta/github/scoring-assistant/test/share/phones.csv', '']
+args  = ['../../../share/phones.csv', '']
 
 input ↓ 
 """
 User A
 """
 ------------------------------- RESULT -------------------------------
-java.io.FileNotFoundException: /home/yuta/github/scoring-assistant/test/share/phones.csv (No such file or directory)
-	at java.base/java.io.FileInputStream.open0(Native Method)
-	at java.base/java.io.FileInputStream.open(FileInputStream.java:216)
-	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:157)
-	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:111)
-	at java.base/java.io.FileReader.<init>(FileReader.java:60)
-	at PhoneNumbers.main(PhoneNumbers.java:20)
+090-0000-0000
 
 ----------------------------- TEST CASE ------------------------------
-args  = ['/home/yuta/github/scoring-assistant/test/share/phones.csv', '']
+args  = ['../../../share/phones.csv', '']
 
 input ↓ 
 """
 User B
 """
 ------------------------------- RESULT -------------------------------
-java.io.FileNotFoundException: /home/yuta/github/scoring-assistant/test/share/phones.csv (No such file or directory)
-	at java.base/java.io.FileInputStream.open0(Native Method)
-	at java.base/java.io.FileInputStream.open(FileInputStream.java:216)
-	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:157)
-	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:111)
-	at java.base/java.io.FileReader.<init>(FileReader.java:60)
-	at PhoneNumbers.main(PhoneNumbers.java:20)
+090-1111-1111
 
 ======================== 課題 : ListSample.java ========================
 
@@ -575,36 +563,24 @@ public class PhoneNumbers {
 --------------------------- COMPILE RESULT ---------------------------
 
 ----------------------------- TEST CASE ------------------------------
-args  = ['/home/yuta/github/scoring-assistant/test/share/phones.csv', '']
+args  = ['../../../share/phones.csv', '']
 
 input ↓ 
 """
 User A
 """
 ------------------------------- RESULT -------------------------------
-java.io.FileNotFoundException: /home/yuta/github/scoring-assistant/test/share/phones.csv (No such file or directory)
-	at java.base/java.io.FileInputStream.open0(Native Method)
-	at java.base/java.io.FileInputStream.open(FileInputStream.java:216)
-	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:157)
-	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:111)
-	at java.base/java.io.FileReader.<init>(FileReader.java:60)
-	at PhoneNumbers.main(PhoneNumbers.java:20)
+090-0000-0000
 
 ----------------------------- TEST CASE ------------------------------
-args  = ['/home/yuta/github/scoring-assistant/test/share/phones.csv', '']
+args  = ['../../../share/phones.csv', '']
 
 input ↓ 
 """
 User B
 """
 ------------------------------- RESULT -------------------------------
-java.io.FileNotFoundException: /home/yuta/github/scoring-assistant/test/share/phones.csv (No such file or directory)
-	at java.base/java.io.FileInputStream.open0(Native Method)
-	at java.base/java.io.FileInputStream.open(FileInputStream.java:216)
-	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:157)
-	at java.base/java.io.FileInputStream.<init>(FileInputStream.java:111)
-	at java.base/java.io.FileReader.<init>(FileReader.java:60)
-	at PhoneNumbers.main(PhoneNumbers.java:20)
+090-1111-1111
 
 ======================== 課題 : ListSample.java ========================
 
@@ -783,9 +759,9 @@ int main(void){
 
 --------------------------- COMPILE RESULT ---------------------------
 report02-1.c:6:15: warning: format specifies type 'float *' but the argument has type 'char *' [-Wformat]
-  scanf("%a", &input);
-         ~~   ^~~~~~
-         %s
+    6 |   scanf("%a", &input);
+      |          ~~   ^~~~~~
+      |          %s
 1 warning generated.
 ----------------------------- TEST CASE ------------------------------
 args  = []
@@ -795,7 +771,7 @@ input ↓
 y
 """
 ------------------------------- RESULT -------------------------------
-Input a character [a-z]: -120
+Input a character [a-z]: -145
 
 ----------------------------- TEST CASE ------------------------------
 args  = []
@@ -805,7 +781,7 @@ input ↓
 a
 """
 ------------------------------- RESULT -------------------------------
-Input a character [a-z]: -122
+Input a character [a-z]: -145
 
 
 
@@ -830,9 +806,9 @@ int main(void){
 
 --------------------------- COMPILE RESULT ---------------------------
 report02-2.c:6:15: warning: format specifies type 'char *' but the argument has type 'int *' [-Wformat]
-  scanf("%c", &num);
-         ~~   ^~~~
-         %d
+    6 |   scanf("%c", &num);
+      |          ~~   ^~~~
+      |          %d
 1 warning generated.
 ----------------------------- TEST CASE ------------------------------
 args  = []
@@ -842,7 +818,7 @@ input ↓
 25
 """
 ------------------------------- RESULT -------------------------------
-Input an integer (>=0): k
+Input an integer (>=0): [
 
 ----------------------------- TEST CASE ------------------------------
 args  = []
@@ -852,7 +828,7 @@ input ↓
 52
 """
 ------------------------------- RESULT -------------------------------
-Input an integer (>=0): n
+Input an integer (>=0): ^
 
 
 
