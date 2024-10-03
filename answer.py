@@ -145,6 +145,11 @@ class Answer:
                         )
                     except Exception as e:
                         self.result_txt += f"Exec Error : 手動で確認してください\n{e}\n"
+                # *.outファイルを削除
+                try:
+                    os.remove(executable)
+                except Exception as e:
+                    self.result_txt += f"Cleanup Error : {e}\n"
 
         # 対象ユーザのディレクトリで実行
         if self.task_lang == "jar":
