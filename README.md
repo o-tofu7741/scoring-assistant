@@ -6,10 +6,16 @@ manabaで提出されたjavaとjar、cの課題を実行して、実行結果を
 - `java`コマンド
 - `gcc`
 - `python=3.11`
-  - `astyle_py`
-  - `chardet`
-  - `jsonschema`
-  - `pathlib`
+  - 利用ライブラリは`pyproject.toml`または`requirements.txt`を参照
+
+### 環境構築
+#### `uv`がインストールされている場合
+1. `pyproject.toml`や`uv.lock`があるディレクトリに移動
+2. `uv sync`を実行
+
+#### `uv`を利用しない場合
+1. `requirements.txt`があるディレクトリに移動
+2. `pip install -r requirements.txt`を実行
 
 ## 使い方
 1. report-12345のような構造のディレクトリを対象にし、対象内に各種情報を記載した`settings.json`を配置する
