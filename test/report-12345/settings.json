@@ -18,10 +18,7 @@
       "lang": "java",
       "args": [
         {
-          "args_value": [
-            "/home/yuta/github/scoring-assistant/test/share/phones.csv",
-            ""
-          ]
+          "args_value": ["../../../share/phones.csv", ""]
         }
       ],
       "inputs": [
@@ -36,13 +33,35 @@
     {
       "name": "ListSample.java",
       "lang": "java",
-      "classpath": [
-        "./test/share"
-      ]
+      "classpath": ["./test/share"]
     },
     {
       "name": "ListLibArray.jar",
       "lang": "jar"
+    },
+    {
+      "name": "report02-1.c",
+      "lang": "c",
+      "inputs": [
+        {
+          "inputs_value": "y"
+        },
+        {
+          "inputs_value": "a"
+        }
+      ]
+    },
+    {
+      "name": "report02-2.c",
+      "lang": "c",
+      "inputs": [
+        {
+          "inputs_value": "25"
+        },
+        {
+          "inputs_value": "52"
+        }
+      ]
     }
   ]
 }

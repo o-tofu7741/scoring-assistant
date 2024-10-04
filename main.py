@@ -69,7 +69,6 @@ def main():
             f.write(stu.result)
     print("採点終了")
 
-
 def exec_stu(values: tuple[dict, Path]):
     settings, stu_path = values
     stu: Student = Student(stu_path, settings)

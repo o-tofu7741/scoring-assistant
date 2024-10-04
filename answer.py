@@ -102,6 +102,55 @@ class Answer:
                 f"{result.strip()}\n"
             )
 
+        elif self.task_lang == "c":
+            executable = self.file_path.with_suffix('.out')
+            cmd = ["gcc", "-Wall", self.file_path.name, "-o", executable.name]
+            result = subprocess.run(
+                args=cmd,
+                stdout=subprocess.PIPE,
+                stderr=subprocess.STDOUT,
+                cwd=self.file_path.parent,
+            )
+            result_b: bytes = result.stdout
+            enc: str = detect(result_b)["encoding"] or "utf-8"
+            result = result_b.decode(enc, errors="backslashreplace")
+            self.result_txt += (
+                f"{' COMPILE RESULT ':-^70}\n"
+                f"{result.strip()}\n"
+            )
+
+            cmd = [f"./{executable.name}"]
+            for arg in self.args if self.args else [{"args_value": []}]:
+                arg_v: list[str] = arg["args_value"]
+                for inp in self.inputs if self.inputs else [{"inputs_value": ""}]:
+                    inputs: str = inp["inputs_value"]
+                    cmd += arg_v
+                    try:
+                        result = subprocess.run(
+                            args=cmd,
+                            stdout=subprocess.PIPE,
+                            stderr=subprocess.STDOUT,
+                            input=inputs.encode(),
+                            cwd=self.file_path.parent,
+                        )
+                        result_b: bytes = result.stdout
+                        enc: str = detect(result_b)["encoding"] or "utf-8"
+                        result = result_b.decode(enc, errors="backslashreplace")
+                        self.result_txt += (
+                            f"{' TEST CASE ':-^70}\n"
+                            f"args  = {arg_v}\n\n"
+                            f"input ↓ \n\"\"\"\n{inputs}\n\"\"\"\n"
+                            f"{' RESULT ':-^70}\n"
+                            f"{result.strip()}\n\n"
+                        )
+                    except Exception as e:
+                        self.result_txt += f"Exec Error : 手動で確認してください\n{e}\n"
+                # *.outファイルを削除
+                try:
+                    os.remove(executable)
+                except Exception as e:
+                    self.result_txt += f"Cleanup Error : {e}\n"
+
         # 対象ユーザのディレクトリで実行
         if self.task_lang == "jar":
             cmd = ["java", "-jar", self.file_path.name]
@@ -140,6 +189,7 @@ class Answer:
                 except Exception as e:
                     self.result_txt += f"Exec Error : 手動で確認してください\n{e}\n"
         self.result_txt = self.result_txt.strip()
+
         return self.result_txt
 
 
